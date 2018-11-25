@@ -12,6 +12,7 @@
       }.bind(this));
       this.asset.load();
     },
+
     initStage: function() {
       var dpr = window.devicePixelRatio;
       this.width = innerWidth * dpr;
@@ -36,6 +37,8 @@
       this.ticker.start();
       this.stage.enableDOMEvent(Hilo.event.POINTER_START, true);
       this.stage.enableDOMEvent(Hilo.event.POINTER_MOVE, true);
+      //舞台更新
+      this.stage.onUpdate = this.onUpdate.bind(this);
 
 
       // 地面
@@ -71,5 +74,12 @@
       console.log('this.stage: ', this.stage);
       // endof car
     },
+
+    onUpdate: function() {
+      // 碰撞检测
+      if (this.car.hitTestObject(this.ground)) {
+        console.log('collision happend.');
+      }
+    }
   };
 }())
