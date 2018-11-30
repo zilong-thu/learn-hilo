@@ -5,14 +5,14 @@
     ground: null,
     car: null,
     road: null,
-    moon: null,
+    car2: null,
 
     load: function(){
       var resources = [
         {id: 'car', src: 'images/car.png'},
         {id: 'ground', src: 'images/ground.png'},
         {id: 'road', src: 'images/road-long.jpg'},
-        {id: 'moon', src: 'images/moon.jpg'},
+        {id: 'car2', src: 'images/car-2.png'},
       ];
 
       this.queue = new Hilo.LoadQueue();
@@ -25,7 +25,7 @@
       this.car = this.queue.get('car').content;
       this.ground = this.queue.get('ground').content;
       this.road = this.queue.get('road').content;
-      this.moon = this.queue.get('moon').content;
+      this.car2 = this.queue.get('car2').content;
 
       this.queue.off('complete');
       this.fire('complete');

@@ -66,6 +66,8 @@
         image: this.asset.car,
         x: 0.5 * (this.width - this.asset.car.width),
         y: this.height - 2 * this.asset.car.height,
+        scaleX: 0.9,
+        scaleY: 0.8,
       }).addTo(this.stage);
 
       Hilo.util.copy(this.car, Hilo.drag);
@@ -76,19 +78,28 @@
 
       // 添加障碍物
       this.holdback = new Hilo.Bitmap({
-        image: this.asset.moon,
-        rect: [0, 0, this.asset.moon.width, this.asset.moon.height],
-        scaleX: 0.3,
-        scaleY: 0.3,
+        image: this.asset.car2,
+        rect: [0, 0, this.asset.car2.width, this.asset.car2.height],
+        scaleX: 0.5,
+        scaleY: 0.5,
       }).addTo(this.stage);
+
+      Hilo.Tween.to(this.holdback, {
+        y: this.height,
+        x: 0.1 * this.width,
+        rotation: -10,  // 逆时针旋转 10 度
+      }, {
+        duration: 3000,
+        loop: true,
+      });
       // endof 障碍物
     },
 
     onUpdate: function() {
       // 碰撞检测
-      // if (this.car.hitTestObject(this.ground)) {
-      //   console.log('collision happend.');
-      // }
+      if (this.car.hitTestObject(this.holdback)) {
+        console.log('collision happend.');
+      }
     }
   };
 }())
