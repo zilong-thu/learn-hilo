@@ -15,8 +15,8 @@
 
     initStage: function() {
       var dpr = window.devicePixelRatio;
-      this.width = innerWidth * dpr;
-      this.height = innerHeight * dpr;
+      this.width = window.innerWidth * dpr;
+      this.height = window.innerHeight * dpr;
       this.scale = 1 / dpr;
 
       var containerElem = document.getElementById('main-stage');
@@ -26,7 +26,7 @@
         width: this.width,
         height: this.height,
         scaleX: this.scale,
-        scaleY: this.scale
+        scaleY: this.scale,
       });
       document.body.appendChild(this.stage.canvas);
 
@@ -40,22 +40,22 @@
       //舞台更新
       this.stage.onUpdate = this.onUpdate.bind(this);
 
-
       // 地面
-      var groundOffset = 60;
-      this.ground = new Hilo.Bitmap({
-          id: 'ground',
-          image: this.asset.ground,
-          scaleX: 1,
+      var groundOffset = this.height;
+      this.road = new Hilo.Bitmap({
+        id: 'road',
+        image: this.asset.road,
+        scaleY: 2 * this.height / this.asset.road.height,
+        scaleX: this.width / this.asset.road.width,
+        x: 0,
+        y: -groundOffset,
       }).addTo(this.stage);
 
-      //设置地面的y轴坐标
-      this.ground.y = Math.round(this.height - this.ground.height);
       //移动地面
-      Hilo.Tween.to(this.ground, {
-        x: -groundOffset
+      Hilo.Tween.to(this.road, {
+        y: 0
       }, {
-        duration: 300,
+        duration: 6000,
         loop: true
       });
       // endof 地面
@@ -64,22 +64,31 @@
       this.car = new Hilo.Bitmap({
         id: 'car',
         image: this.asset.car,
-        x: 0.5 * this.width * this.scale,
-        y: 0.5 * this.height * this.scale,
+        x: 0.5 * (this.width - this.asset.car.width),
+        y: this.height - 2 * this.asset.car.height,
       }).addTo(this.stage);
 
       Hilo.util.copy(this.car, Hilo.drag);
-      this.car.startDrag([0, 0, this.width, this.ground.y]);
+      this.car.startDrag([0, 0, this.width - this.car.width, this.height - this.car.height]);
       console.log('this.car: ', this.car);
       console.log('this.stage: ', this.stage);
       // endof car
+
+      // 添加障碍物
+      this.holdback = new Hilo.Bitmap({
+        image: this.asset.moon,
+        rect: [0, 0, this.asset.moon.width, this.asset.moon.height],
+        scaleX: 0.3,
+        scaleY: 0.3,
+      }).addTo(this.stage);
+      // endof 障碍物
     },
 
     onUpdate: function() {
       // 碰撞检测
-      if (this.car.hitTestObject(this.ground)) {
-        console.log('collision happend.');
-      }
+      // if (this.car.hitTestObject(this.ground)) {
+      //   console.log('collision happend.');
+      // }
     }
   };
 }())
